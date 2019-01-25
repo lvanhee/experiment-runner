@@ -5,8 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,18 +48,7 @@ public class FileReadWriter {
 
 	public static Set<DataPoint> loadDataPoints(String string) {
 		Path p = Paths.get(string);
-		try {
-			if(Files.exists(p)) 
-				return Files.lines(p)
-				.map((String x)->(DataPoint)(DataPointImpl.parse(x)))
-				.collect(Collectors.toSet());
-			return new HashSet<>();
-		}
-
-		catch (IOException e) {
-			e.printStackTrace();
-			throw new Error();
-		}
+		return loadDataPoints(p);
 	}
 
 	public static void saveAs(Set<DataPoint> data, String filename,
@@ -149,6 +141,45 @@ public class FileReadWriter {
 		}catch (IOException e) {
 			throw new Error();
 		}
+	}
+
+	public static Set<DataPoint> loadDataPoints(Path p) {
+		try {
+			if(Files.exists(p)) 
+				return Files.lines(p)
+				.map((String x)->(DataPoint)(DataPointImpl.parse(x)))
+				.collect(Collectors.toSet());
+			return new HashSet<>();
+		}
+
+		catch (IOException e) {
+			e.printStackTrace();
+			throw new Error();
+		}
+	}
+
+	public static Map<String, String> parseMap(String input) {
+		if(input.equals("{}"))return new HashMap<>();
+		Map<String, String> res = new HashMap<String, String>();
+		input = input.replaceAll("}", "");
+		for(String s: input.substring(0, input.length()).split(","))
+		{
+			if(s.startsWith("{")|| s.startsWith(" "))s = s.substring(1);
+			res.put(s.split("=")[0],s.split("=")[1]);
+		}
+		return res;
+	}
+
+	public static Set<String> parseSet(String string) {
+		assert(string.startsWith("{"));
+		
+		Set<String>res = new HashSet<>();
+		res.addAll(
+				Arrays.asList(
+				string.substring(1, string.length()-1).split(",")
+				));
+		return res;
+	
 	}
 
 }

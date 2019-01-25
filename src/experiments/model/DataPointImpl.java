@@ -1,7 +1,7 @@
 package experiments.model;
 
 
-import experiments.processing.ExperimentRunner;
+import experiments.executor.ExperimentRunner;
 
 public class DataPointImpl implements DataPoint{
 	private final Experiment experiment;

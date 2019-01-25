@@ -3,7 +3,7 @@ package experiments.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import experiments.processing.ProcessingUtils;
+import experiments.inout.FileReadWriter;
 
 public class ExperimentImpl implements Experiment {
 	
@@ -28,7 +28,7 @@ public class ExperimentImpl implements Experiment {
 	}
 
 	public static Experiment parseString(String input) {
-		return ExperimentImpl.newInstance(ProcessingUtils.parseMap(input));
+		return ExperimentImpl.newInstance(FileReadWriter.parseMap(input));
 	}
 
 }

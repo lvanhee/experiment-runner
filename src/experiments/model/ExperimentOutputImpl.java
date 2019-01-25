@@ -2,7 +2,7 @@ package experiments.model;
 
 import java.util.Map;
 
-import experiments.processing.ProcessingUtils;
+import experiments.inout.FileReadWriter;
 
 public class ExperimentOutputImpl implements ExperimentOutput{
 	
@@ -28,7 +28,7 @@ public class ExperimentOutputImpl implements ExperimentOutput{
 	}
 
 	public static ExperimentOutputImpl parse(String end) {
-		return newInstance(ProcessingUtils.parseMap(end));
+		return newInstance(FileReadWriter.parseMap(end));
 	}
 
 }

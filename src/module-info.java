@@ -5,10 +5,10 @@
  * @author vanhee
  *
  */
-module Experiment {
-	exports experiments.inout;
+module experiment_runner {
 	exports experiments.model;
-	exports experiments.processing;
-	exports experiments.processing.timeout;
-	
+	exports experiments;
+	exports experiments.inout;
+
+	requires java.desktop;
 }
