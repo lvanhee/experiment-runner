@@ -144,7 +144,7 @@ public class MainNetLogoDiffExplorer {
 						comparisonVariables, 
 						criteriaToMaximize, 
 						runner,
-						Randomize.NO,
+						Randomize.SHUFFLE,
 						validityChecker
 						); 
 	}
