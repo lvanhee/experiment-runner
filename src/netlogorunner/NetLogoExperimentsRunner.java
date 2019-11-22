@@ -98,17 +98,20 @@ public class NetLogoExperimentsRunner implements ExperimentRunner{
 		return dateFormat.format(date);
 	}
 
-	public static boolean isNumeric(String str)  
+	public static boolean isNumeric(Object str)  
 	{  
-	  try  
-	  {  
-	    double d = Double.parseDouble(str);  
-	  }  
-	  catch(NumberFormatException nfe)  
-	  {  
-	    return false;  
-	  }  
-	  return true;  
+		if(str instanceof String)
+		{
+			try  
+			{  
+				double d = Double.parseDouble((String) str);  
+			}  
+			catch(NumberFormatException nfe)  
+			{  
+				return false;  
+			}  
+			return true;  
+		}else throw new Error();
 	}
 
 }

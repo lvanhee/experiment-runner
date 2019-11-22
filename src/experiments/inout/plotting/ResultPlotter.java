@@ -64,17 +64,18 @@ public static void drawSeries(final XYSeriesCollection data, String title) {
 
 public static void plot(Set<DataPoint> points, String lines, String x, String y, 
 		String title) {
-	Map<String, Set<DataPoint>> splittedExperiments = Experiment.splitBy(points, lines);
+	Map<Object, Set<DataPoint>> splittedExperiments = 
+			Experiment.splitBy(points, lines);
 
 	final XYSeriesCollection data = new XYSeriesCollection();
 
-	for(String s: splittedExperiments.keySet()) {
+	for(Object s: splittedExperiments.keySet()) {
 		Set<DataPoint> elements = splittedExperiments.get(s);
-		Map<String, Set<String>> pointsNames = DataPoint.toPoints(elements, x,y);
+		Map<Object, Set<String>> pointsNames = DataPoint.toPoints(elements, x,y);
 		Map<Double, Double> pointValues = pointsNames.keySet().stream()
 				.collect(
 						Collectors.toMap(
-								z->Double.parseDouble(z),
+								z->Double.parseDouble(z.toString()),
 								z-> pointsNames
 								.get(z)
 								.stream()
@@ -85,7 +86,7 @@ public static void plot(Set<DataPoint> points, String lines, String x, String y,
 				z->
 				new Point(z.intValue(), pointValues.get(z).intValue())).collect(Collectors.toList());
 
-		final XYSeries series = new XYSeries(s);
+		final XYSeries series = new XYSeries((Comparable) s);
 		for(Point p: l)
 			series.add(p.getX(), p.getY());
 		data.addSeries(series);

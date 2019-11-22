@@ -11,11 +11,11 @@ public interface DataPoint {
 
 	ExperimentOutput getExperimentOutput();
 
-	static Map<String, Set<String>> toPoints(Set<DataPoint> set, String x, String y) {
-		Map<String, Set<String>>res = new HashMap<String, Set<String>>();
+	static Map<Object, Set<String>> toPoints(Set<DataPoint> set, String x, String y) {
+		Map<Object, Set<String>>res = new HashMap<Object, Set<String>>();
 		for(DataPoint d: set)
 		{
-			String X =  d.getExperiment().getInputMap().get(x);
+			Object X =  d.getExperiment().getInputMap().get(x);
 			String Y = d.getExperimentOutput().getResultMap().get(y);
 			if(!res.containsKey(X))
 				res.put(X, new HashSet<String>());

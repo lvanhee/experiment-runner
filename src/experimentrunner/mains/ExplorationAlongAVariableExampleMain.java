@@ -18,8 +18,9 @@ import experiments.model.ExperimentOutput;
 import experiments.model.ExperimentOutputImpl;
 import experiments.model.ExperimentSeries;
 import experiments.model.Variable;
+import experiments.model.VariableImpl;
 import experiments.model.experimentRunner.ExperimentRunner;
-import experiments.model.explorationstrategies.MonodimensionalExplorationAroundABaseline;
+import experiments.model.explorationstrategies.OFATExplorationAroundABaseline;
 import experiments.processing.ExperimentBatchRunner;
 
 public class ExplorationAlongAVariableExampleMain {
@@ -51,30 +52,32 @@ public class ExplorationAlongAVariableExampleMain {
 		Set<Variable> exploredVariables = new HashSet<Variable>();
 		
 		exploredVariables.add(
-				Variable.newInstance(
+				VariableImpl.newInstance(
 						InputVariable.IV1.name(),
 						0.01d, 0.1d, 1d)
 				);
 		
 		exploredVariables.add(
-				Variable.newInstance(
+				VariableImpl.newInstance(
 						InputVariable.IV3.name(),
 						0.01d, 0.1d, 1d)
 				);
 		
 		//This variable is the one used as a comparison criterion (e.g. it sets the
 		//lines on a graph)
-		Variable lineVariable = 
-				Variable.newInstance(
+		VariableImpl lineVariable = 
+				VariableImpl.newInstance(
 						InputVariable.IV4.name(),
 						Arrays.asList("a", "b","c","d")
 				);
+		Set<Variable> linesVariable = new HashSet<Variable>();
+		linesVariable.add(lineVariable);
 		
-		MonodimensionalExplorationAroundABaseline explo = 
-				MonodimensionalExplorationAroundABaseline
+		OFATExplorationAroundABaseline explo = 
+				OFATExplorationAroundABaseline
 				.newInstance(baseline, 
 						exploredVariables, 
-						lineVariable);
+						linesVariable);
 		
 		System.out.println("Baseline:"+explo.getBaseline());
 		
@@ -83,10 +86,10 @@ public class ExplorationAlongAVariableExampleMain {
 			ExperimentSeries es = explo.getSeriesRelatedTo(v);
 			ExperimentRunner er = (x->
 			{
-				double o1 = Double.parseDouble(x.getInputMap().get(InputVariable.IV1.name()));
-				double o2 = Double.parseDouble(x.getInputMap().get(InputVariable.IV2.name()));
-				double o3 = Double.parseDouble(x.getInputMap().get(InputVariable.IV1.name()))+
-						Double.parseDouble(x.getInputMap().get(InputVariable.IV3.name()));
+				double o1 = Double.parseDouble(x.getInputMap().get(InputVariable.IV1.name()).toString());
+				double o2 = Double.parseDouble(x.getInputMap().get(InputVariable.IV2.name()).toString());
+				double o3 = Double.parseDouble(x.getInputMap().get(InputVariable.IV1.name()).toString())+
+						Double.parseDouble(x.getInputMap().get(InputVariable.IV3.name()).toString());
 				Map<String, String> res = new HashMap<String, String>();
 				res.put(OutputVariable.OV1.name(),o1+"");
 				res.put(OutputVariable.OV2.name(),o2+"");
@@ -98,11 +101,11 @@ public class ExplorationAlongAVariableExampleMain {
 
 			for(OutputVariable ov:OutputVariable.values())
 			{
-				System.out.println("Experimenting "+v+","+ov+" regarding:"+explo.getLineVariable());
+				System.out.println("Experimenting "+v+","+ov+" regarding:"+explo.getLinesVariable());
 				ToTikzPlot.exportToTikz(values,
 						v.getName(),
 						ov.name(), 
-						explo.getLineVariable());
+						explo.getLinesVariable());
 			}
 		}
 
@@ -114,7 +117,7 @@ public class ExplorationAlongAVariableExampleMain {
 	private static Experiment getBaseline()
 	{
 		
-		Map<String, String> m = new HashMap<String, String>();
+		Map<String, Object> m = new HashMap<String, Object>();
 		m.put(InputVariable.IV1.name(), 0.5+"");
 		m.put(InputVariable.IV2.name(), 0.5+"");
 		m.put(InputVariable.IV3.name(), 0.5+"");

@@ -95,7 +95,7 @@ public class MainSensitivityAnalysis {
 			ExperimentSeries es = getExperimentSeries(this);
 			int btd = Integer.parseInt(
 					es.getSetups().get(0)
-					.getInputMap().get("base-task-duration"));
+					.getInputMap().get("base-task-duration").toString());
 			
 			int btdMin = btd*9/10;
 			int btdMax = btd*11/10;
@@ -106,7 +106,7 @@ public class MainSensitivityAnalysis {
 			res.add(new Pair<String>("base-task-duration", ""+btdMax));
 			
 			int baseTimeBeforeDeadline = Integer.parseInt(es.getSetups()
-					.get(0).getInputMap().get("nb-of-steps-before-deadline"));
+					.get(0).getInputMap().get("nb-of-steps-before-deadline").toString());
 			
 			int baseTimeBeforeDeadlineMin = baseTimeBeforeDeadline*9/10;
 			int baseTimeBeforeDeadlineMax = baseTimeBeforeDeadline*11/10;
@@ -159,7 +159,7 @@ public class MainSensitivityAnalysis {
 	}
 
 	private static ExperimentSeries getExperimentSeries(Experiments expe) {
-		Map<String, List<String>> possibleParameterValues = new HashMap<>();
+		Map<String, List<Object>> possibleParameterValues = new HashMap<>();
 		
 		possibleParameterValues.put("leader-value-system", 
 				Arrays.asList("PDI- MAS+","PDI- MAS-","PDI+ MAS+","PDI+ MAS-"));
@@ -175,7 +175,7 @@ public class MainSensitivityAnalysis {
 					possibleParameterValues.put("subordinate-value-system", 
 							Arrays.asList("PDI- MAS+"));
 		
-		LinkedList<String> seeds = new LinkedList<>();
+		LinkedList<Object> seeds = new LinkedList<>();
 		for(int i = 0; i < NUMBER_REPETITIONS ; i++)
 			seeds.add(""+i);
 		possibleParameterValues.put("seed", 
@@ -230,7 +230,7 @@ public class MainSensitivityAnalysis {
 		
 		if(expe.isComplex())
 		{
-			List<String> l = new ArrayList<>();
+			List<Object> l = new ArrayList<>();
 			for(float f = 0; f <= 1 ; f+=0.05)
 				l.add(""+f);
 			possibleParameterValues.put("environmental-complexity", 
@@ -294,7 +294,7 @@ public class MainSensitivityAnalysis {
 		
 		if(expe.isBursting())
 		{
-			List<String> possibleBursts = new ArrayList<>();
+			List<Object> possibleBursts = new ArrayList<>();
 			for(int i = 1 ;  i < 25 ; i++)
 			{
 				possibleBursts.add(""+i);
@@ -311,7 +311,7 @@ public class MainSensitivityAnalysis {
 		
 		if(expe.isIntensive())
 		{
-			List<String> possibleVariations = new ArrayList<>();
+			List<Object> possibleVariations = new ArrayList<>();
 			for(int i = 1 ;  i < 25 ; i++)
 			{
 				possibleVariations.add(""+i);

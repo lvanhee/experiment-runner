@@ -13,6 +13,7 @@ import experiments.model.Experiment;
 import experiments.model.ExperimentOutput;
 import experiments.model.ExperimentSeries;
 import experiments.model.Variable;
+import experiments.model.VariableImpl;
 import experiments.model.experimentRunner.CacheInDatabaseExperimentRunner;
 import experiments.model.experimentRunner.ExperimentRunner;
 import experiments.processing.ExperimentBatchRunner;
@@ -48,8 +49,10 @@ public class MainNetLogoDiffExplorer {
 							e.getSetups()
 							.stream()
 							.filter(x->
-							Integer.parseInt(x.getInputMap().get("#obedient-robots"))==0
-							|| Integer.parseInt(x.getInputMap().get("#obedient-robots"))==4)
+							Integer.parseInt(
+									x.getInputMap().get("#obedient-robots").toString())==0
+							|| Integer.parseInt(
+									x.getInputMap().get("#obedient-robots").toString())==4)
 							.collect(Collectors.toSet());
 					Set<Experiment> multiCVSExperiments = 
 							e.getSetups()
@@ -114,25 +117,25 @@ public class MainNetLogoDiffExplorer {
 		
 		
 		Set<Variable> definableVariables = new HashSet<>();
-		definableVariables.add(Variable.newInstance("#deliveries", 
+		definableVariables.add(VariableImpl.newInstance("#deliveries", 
 				Arrays.asList("4","5","6","8","9","12","15","18")));
-		definableVariables.add(Variable.newInstance("robot-carry-capacity", 1,1,2));
-		definableVariables.add(Variable.newInstance("grid-width", 7,4,15));
-		definableVariables.add(Variable.newInstance("grid-height", 7,4,15));		
+		definableVariables.add(VariableImpl.newInstance("robot-carry-capacity", 1,1,2));
+		definableVariables.add(VariableImpl.newInstance("grid-width", 7,4,15));
+		definableVariables.add(VariableImpl.newInstance("grid-height", 7,4,15));		
 		
 		Set<Variable> comparisonVariables = new HashSet<>();
-		comparisonVariables.add(Variable.newInstance("r-seed", 1, 1, 2));
-		comparisonVariables.add(Variable.newInstance("#obedient-robots", 0, 1, 4));
-		comparisonVariables.add(Variable.newInstance("#fallen-crates", 0, 5, 20));
+		comparisonVariables.add(VariableImpl.newInstance("r-seed", 1, 1, 2));
+		comparisonVariables.add(VariableImpl.newInstance("#obedient-robots", 0, 1, 4));
+		comparisonVariables.add(VariableImpl.newInstance("#fallen-crates", 0, 5, 20));
 		
 		Predicate<Experiment> validityChecker = 
 				(x-> {
 					if(
-							Integer.parseInt(x.getInputMap().get("grid-width"))+
-							Integer.parseInt(x.getInputMap().get("grid-height"))
+							Integer.parseInt(x.getInputMap().get("grid-width").toString())+
+							Integer.parseInt(x.getInputMap().get("grid-height").toString())
 							<=14
 							&&
-							Integer.parseInt(x.getInputMap().get("#deliveries"))>=18)
+							Integer.parseInt(x.getInputMap().get("#deliveries").toString())>=18)
 						return false;
 					return true;
 							

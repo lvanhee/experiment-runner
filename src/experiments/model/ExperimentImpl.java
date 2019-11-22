@@ -7,20 +7,20 @@ import experiments.processing.ProcessingUtils;
 
 public class ExperimentImpl implements Experiment {
 	
-	private final Map<String, String> map;
+	private final Map<String, Object> map;
 	
-	public ExperimentImpl(Map<String, String> m) {
+	public ExperimentImpl(Map<String, Object> m) {
 		if(m.keySet().stream().anyMatch(x->x.startsWith("obot")))
 			System.out.println();
 		this.map = m;
 	}
 
 	@Override
-	public Map<String, String> getInputMap() {
+	public Map<String, Object> getInputMap() {
 		return map;
 	}
 
-	public static ExperimentImpl newInstance(Map<String, String> res) {
+	public static ExperimentImpl newInstance(Map<String, Object> res) {
 		return new ExperimentImpl(res);
 	}
 	
@@ -30,11 +30,13 @@ public class ExperimentImpl implements Experiment {
 	}
 
 	public static Experiment parseString(String input) {
-		return ExperimentImpl.newInstance(ProcessingUtils.parseMap(input));
+		Map<String, Object> res = new HashMap<String, Object>();
+		res.putAll(ProcessingUtils.parseMap(input));
+		return ExperimentImpl.newInstance(res);
 	}
 
 	public static Experiment merge(Experiment base, Experiment expand) {
-		Map<String, String> res = new HashMap<>();
+		Map<String, Object> res = new HashMap<>();
 		res.putAll(base.getInputMap());
 		res.putAll(expand.getInputMap());
 		return ExperimentImpl.newInstance(res);

@@ -23,6 +23,7 @@ import experiments.model.Experiment;
 import experiments.model.ExperimentOutput;
 import experiments.model.ExperimentSeries;
 import experiments.model.Variable;
+import experiments.model.VariableImpl;
 import experiments.model.experimentRunner.ExperimentRunner;
 
 public class ExperimentBatchRunner {
@@ -201,8 +202,10 @@ private static final boolean PLOT = false;
 	
 	
 
-	public static ExperimentSeries getSeriesMaximizing(Set<Variable> definableVariables, Set<Variable> comparisonVariables,
-			Function<ExperimentSeries, Double> criteriaToMaximize, ExperimentRunner er,
+	public static ExperimentSeries getSeriesMaximizing(Set<Variable> definableVariables,
+			Set<Variable> comparisonVariables,
+			Function<ExperimentSeries, Double> criteriaToMaximize, 
+			ExperimentRunner er,
 			Randomize r, Predicate<Experiment> validityChecker
 			) {
 		List<ExperimentSeries> expe = ExperimentSeries.cartesianProduct(

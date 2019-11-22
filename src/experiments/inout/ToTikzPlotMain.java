@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import experiments.model.DataPoint;
 import experiments.model.Experiment;
-import experiments.model.Variable;
+import experiments.model.VariableImpl;
 
 
 public class ToTikzPlotMain {

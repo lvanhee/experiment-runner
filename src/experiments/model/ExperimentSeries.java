@@ -13,14 +13,14 @@ public class ExperimentSeries {
 
 	private final List<Experiment> expes ;
 
-	public ExperimentSeries(List<Experiment> expes2) {
+	private ExperimentSeries(List<Experiment> expes2) {
 		this.expes = expes2;
 	}
 
 	@Deprecated
 	public static ExperimentSeries newInstance(
-			Map<String, List<String>> possibleParameterValues) {
-		Map<String, List<String>> tmp = new HashMap<>();
+			Map<String, List<Object>> possibleParameterValues) {
+		Map<String, List<Object>> tmp = new HashMap<>();
 		tmp.putAll(possibleParameterValues);
 		return new ExperimentSeries(getAllPossibleInstances(tmp)
 				 .stream().map(x->ExperimentImpl.newInstance(x))
@@ -28,24 +28,25 @@ public class ExperimentSeries {
 				);
 	}
 
-	private static List<Map<String, String>> getAllPossibleInstances(
-			Map<String, List<String>> possibleParameterValues) {
+	private static List<Map<String, Object>> getAllPossibleInstances(
+			Map<String, List<Object>> possibleParameterValues) {
 		if(possibleParameterValues.isEmpty())
 			return Arrays.asList(new HashMap<>());
 		String current = possibleParameterValues.keySet().iterator().next();
-		List<String> values = possibleParameterValues.get(current);
+		List<Object> values = possibleParameterValues.get(current);
 		possibleParameterValues.remove(current);
 		
-		List<Map<String,String>> possibleMaps = getAllPossibleInstances(possibleParameterValues);
+		List<Map<String,Object>> possibleMaps = 
+				getAllPossibleInstances(possibleParameterValues);
 		
-		List<Map<String, String>> res = new ArrayList<>();
+		List<Map<String, Object>> res = new ArrayList<>();
 		
-		for(String possibleValue : values)
+		for(Object possibleValue : values)
 		{
-			List<Map<String,String>> copyPossibleMaps = new ArrayList<>();
-			for(Map<String, String> m : possibleMaps)
+			List<Map<String,Object>> copyPossibleMaps = new ArrayList<>();
+			for(Map<String, Object> m : possibleMaps)
 			{
-				Map<String, String> copy = new HashMap<>();
+				Map<String, Object> copy = new HashMap<>();
 				copy.putAll(m);
 				copyPossibleMaps.add(copy);
 			}
@@ -63,7 +64,7 @@ public class ExperimentSeries {
 		List<Experiment>expes = new LinkedList<>();
 		for(Experiment setup:es.getSetups())
 		{
-			Map<String, String> m = setup.getInputMap();
+			Map<String, Object> m = setup.getInputMap();
 			m.put(parameter, value);
 			
 			expes.add(ExperimentImpl.newInstance(m));
@@ -72,7 +73,7 @@ public class ExperimentSeries {
 	}
 
 	public static ExperimentSeries newInstance(Set<Variable> ranges) {
-		Map<String, List<String>> res = new HashMap<>();
+		Map<String, List<Object>> res = new HashMap<>();
 		for(Variable r: ranges)
 			res.put(r.getName(), r.getValues());
 		return ExperimentSeries.newInstance(res);
@@ -104,8 +105,8 @@ public class ExperimentSeries {
 		return expes.toString();
 	}
 
-	public Map<String, String> getLockedVariablesMap() {
-		Map<String, String> res = new HashMap<String, String>();
+	public Map<String, Object> getLockedVariablesMap() {
+		Map<String, Object> res = new HashMap<String, Object>();
 		Set<String> free = new HashSet<String>();
 		
 		for(Experiment e: expes)
