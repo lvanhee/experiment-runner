@@ -9,19 +9,19 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import experiments.inout.ToTikzPlot;
-import experiments.model.DataPoint;
-import experiments.model.DataPointImpl;
-import experiments.model.Experiment;
-import experiments.model.ExperimentImpl;
-import experiments.model.ExperimentOutput;
-import experiments.model.ExperimentOutputImpl;
-import experiments.model.ExperimentSeries;
-import experiments.model.Variable;
-import experiments.model.VariableImpl;
-import experiments.model.experimentRunner.ExperimentRunner;
-import experiments.model.explorationstrategies.OFATExplorationAroundABaseline;
-import experiments.processing.ExperimentBatchRunner;
+import experimentrunner.inout.ToTikzPlot;
+import experimentrunner.model.experiment.data.DataPoint;
+import experimentrunner.model.experiment.data.DataPointImpl;
+import experimentrunner.model.experiment.data.ExperimentOutput;
+import experimentrunner.model.experiment.data.ExperimentOutputImpl;
+import experimentrunner.model.experiment.data.ExperimentSetup;
+import experimentrunner.model.experiment.data.ExperimentSetupImpl;
+import experimentrunner.model.experiment.variables.Variable;
+import experimentrunner.model.experiment.variables.VariableImpl;
+import experimentrunner.model.experimentexecutor.ExperimentBatchRunner;
+import experimentrunner.model.experimentexecutor.ExperimentLinearScheduler;
+import experimentrunner.model.experimentexecutor.OFATExplorationAroundABaseline;
+import experimentrunner.model.experimentrunner.ExperimentRunner;
 
 public class ExplorationAlongAVariableExampleMain {
 	
@@ -48,7 +48,7 @@ public class ExplorationAlongAVariableExampleMain {
 	{
 		
 		
-		Experiment baseline = getBaseline();
+		ExperimentSetup baseline = getBaseline();
 		Set<Variable> exploredVariables = new HashSet<Variable>();
 		
 		exploredVariables.add(
@@ -83,13 +83,13 @@ public class ExplorationAlongAVariableExampleMain {
 		
 		for(Variable v: explo.getExploredVariables())
 		{
-			ExperimentSeries es = explo.getSeriesRelatedTo(v);
+			ExperimentLinearScheduler es = explo.getSeriesRelatedTo(v);
 			ExperimentRunner er = (x->
 			{
-				double o1 = Double.parseDouble(x.getInputMap().get(InputVariable.IV1.name()).toString());
-				double o2 = Double.parseDouble(x.getInputMap().get(InputVariable.IV2.name()).toString());
-				double o3 = Double.parseDouble(x.getInputMap().get(InputVariable.IV1.name()).toString())+
-						Double.parseDouble(x.getInputMap().get(InputVariable.IV3.name()).toString());
+				double o1 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV1.name()).toString());
+				double o2 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV2.name()).toString());
+				double o3 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV1.name()).toString())+
+						Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV3.name()).toString());
 				Map<String, String> res = new HashMap<String, String>();
 				res.put(OutputVariable.OV1.name(),o1+"");
 				res.put(OutputVariable.OV2.name(),o2+"");
@@ -114,7 +114,7 @@ public class ExplorationAlongAVariableExampleMain {
 
 	}
 	
-	private static Experiment getBaseline()
+	private static ExperimentSetup getBaseline()
 	{
 		
 		Map<String, Object> m = new HashMap<String, Object>();
@@ -122,7 +122,7 @@ public class ExplorationAlongAVariableExampleMain {
 		m.put(InputVariable.IV2.name(), 0.5+"");
 		m.put(InputVariable.IV3.name(), 0.5+"");
 		m.put(InputVariable.IV4.name(), 0.5+"");
-		return ExperimentImpl.newInstance(m);
+		return ExperimentSetupImpl.newInstance(m);
 	}
 
 }
