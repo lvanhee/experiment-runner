@@ -8,12 +8,12 @@ import java.util.Set;
 
 import org.json.simple.JSONObject;
 
-import experimentrunner.mains.ExperimentSetUtils;
 import experimentrunner.model.experiment.data.ExperimentOutput;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.ranges.VariableRange;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;
+import experimentrunner.model.experimentexecutor.ExperimentSetUtils;
 import experimentrunner.modules.netlogo.NetLogoExperimentsRunner;
 
 public class WithinSubjectIteratingExperimentsRunner implements ExperimentRunner{

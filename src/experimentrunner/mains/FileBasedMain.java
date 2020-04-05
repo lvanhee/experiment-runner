@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import experimentrunner.inout.OutputGenerator;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experimentrunner.ExperimentRunner;
 

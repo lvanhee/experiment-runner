@@ -1,4 +1,4 @@
-package experimentrunner.mains;
+package experimentrunner.inout;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
-import experimentrunner.mains.OutputGenerator.OutputType;
+import experimentrunner.inout.OutputGenerator.OutputType;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;

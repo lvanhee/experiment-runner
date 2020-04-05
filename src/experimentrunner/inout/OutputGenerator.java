@@ -1,4 +1,4 @@
-package experimentrunner.mains;
+package experimentrunner.inout;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
-import experimentrunner.inout.FileReadWriter;
 import experimentrunner.inout.FileReadWriter.FileFormat;
 import experimentrunner.inout.FileReadWriter.FileOperation;
 import experimentrunner.model.experiment.data.DataPoint;
@@ -21,6 +20,7 @@ import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;
 import experimentrunner.model.experiment.variables.VariableImpl;
+import experimentrunner.model.experimentexecutor.ExperimentSetUtils;
 import experimentrunner.model.experimentrunner.ExperimentRunner;
 
 public interface OutputGenerator {

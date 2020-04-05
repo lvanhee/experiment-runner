@@ -17,12 +17,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import experimentrunner.mains.ValueComparator;
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.DataPointImpl;
 import experimentrunner.model.experiment.data.ExperimentOutput;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.data.ExperimentSetupImpl;
+import experimentrunner.model.experiment.values.ValueComparator;
 import experimentrunner.model.experiment.variables.Variable;
 
 public class FileReadWriter {

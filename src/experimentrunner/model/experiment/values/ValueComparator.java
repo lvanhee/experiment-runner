@@ -1,10 +1,6 @@
-package experimentrunner.mains;
+package experimentrunner.model.experiment.values;
 
 import java.util.Comparator;
-
-import experimentrunner.model.experiment.values.DoubleValue;
-import experimentrunner.model.experiment.values.IntValue;
-import experimentrunner.model.experiment.values.Value;
 
 public enum ValueComparator implements Comparator<Value> {INSTANCE;
 

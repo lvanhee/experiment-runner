@@ -1,4 +1,4 @@
-package experimentrunner.mains;
+package experimentrunner.model.experimentexecutor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,6 @@ import experimentrunner.model.experiment.data.ExperimentSetupImpl;
 import experimentrunner.model.experiment.ranges.VariableRange;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;
-import experimentrunner.model.experimentexecutor.ExperimentLinearScheduler;
 
 public class ExperimentSetUtils {
 
