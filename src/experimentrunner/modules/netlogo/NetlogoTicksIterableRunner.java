@@ -1,5 +1,6 @@
 package experimentrunner.modules.netlogo;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
@@ -27,10 +28,12 @@ public class NetlogoTicksIterableRunner implements NetlogoExperimentRunner, Iter
 		this.nlmp = nlmp;		
 		this.outputVariables = outputVariables;
 	}
-	public static NetlogoTicksIterableRunner newInstance(JSONObject jsonObject,
+	public static NetlogoTicksIterableRunner newInstance(
+			JSONObject jsonObject,
+			Path file,
 			Set<Variable> outputVariables) {
 		NetlogoProgramManager nlmp = NetlogoProgramManager.newInstance(
-				Paths.get((String)jsonObject.get("file")),
+				file,
 				((String)jsonObject.get("setup")),
 				((String)jsonObject.get("go"))
 				);

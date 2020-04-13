@@ -47,4 +47,9 @@ public class DoubleVariableRange implements VariableRange{
 		return newInstance(Double.parseDouble(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]));
 	}
 
+	@Override
+	public Value aRandomValue() {
+		return getValues().stream().findAny().get();
+	}
+
 }

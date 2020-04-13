@@ -1,6 +1,6 @@
 package experimentrunner.model.experiment.values;
 
-public class IntValue implements Value {
+public class IntValue implements NumericValue {
 	
 	private final int val;
 	private IntValue(int val)

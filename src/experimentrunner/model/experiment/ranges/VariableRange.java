@@ -17,4 +17,6 @@ public interface VariableRange {
 
 	List<Value> getValues();
 
+	Value aRandomValue();
+
 }

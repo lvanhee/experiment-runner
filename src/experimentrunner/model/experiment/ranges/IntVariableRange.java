@@ -36,4 +36,9 @@ public class IntVariableRange implements NumericVariableRange {
 		return "["+start+" "+step+" "+end+"]";
 	}
 
+	@Override
+	public Value aRandomValue() {
+		return getValues().stream().findAny().get();
+	}
+
 }

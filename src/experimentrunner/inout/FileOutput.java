@@ -9,8 +9,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
-
-import experimentrunner.inout.OutputGenerator.OutputType;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;

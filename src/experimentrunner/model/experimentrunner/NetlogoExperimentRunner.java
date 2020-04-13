@@ -1,5 +1,7 @@
 package experimentrunner.model.experimentrunner;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.function.Supplier;
 
 import org.json.simple.JSONObject;
@@ -9,19 +11,20 @@ import experimentrunner.model.experiment.variables.Variable;
 import experimentrunner.model.experiment.variables.VariableImpl;
 import experimentrunner.modules.netlogo.NetlogoTicksIterableRunner;
 
-public interface NetlogoExperimentRunner {
+public interface NetlogoExperimentRunner extends ExperimentRunner {
 
 	public static ExperimentRunner parse(JSONObject jsonObject, ExperimentVariableNetwork vars) {
-		
-		
+		Path file = Paths.get((String)jsonObject.get("file"));
+		String preSetup = "";
+		if(jsonObject.containsKey("pre-setup"))
+			preSetup = (String)jsonObject.get("pre-setup");
 		if(vars.getInputVariables().contains(VariableImpl.newInstance("ticks")))
 		{
 			Variable withinSubjectVariable = VariableImpl.newInstance("ticks");
-			NetlogoTicksIterableRunner runner = 
-					NetlogoTicksIterableRunner.newInstance(jsonObject, vars.getOutputVariables());
+
 			
 			Supplier<IterableExperimentRunner> newRunner =
-					()->NetlogoTicksIterableRunner.newInstance(jsonObject, vars.getOutputVariables());
+					()->NetlogoTicksIterableRunner.newInstance(jsonObject, file, vars.getOutputVariables());
 					
 			Supplier<WithinSubjectIteratingExperimentsRunner> newIterating =
 					()-> WithinSubjectIteratingExperimentsRunner.newInstance(
@@ -37,7 +40,10 @@ public interface NetlogoExperimentRunner {
 					 newIterating
 					 );
 		}
-		throw new Error();
+		
+		return SimpleNetLogoExperimentRunner.newInstance(file, vars.getOutputVariables(),preSetup);
+
+		//throw new Error();
 	}
 
 }

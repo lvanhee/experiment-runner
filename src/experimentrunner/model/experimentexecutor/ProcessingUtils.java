@@ -1,13 +1,20 @@
 package experimentrunner.model.experimentexecutor;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.ExperimentSetup;
+import experimentrunner.model.experiment.ranges.VariableRange;
+import experimentrunner.model.experiment.values.Value;
+import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
+import experimentrunner.model.experiment.variables.Variable;
 
 public class ProcessingUtils {
 
@@ -37,6 +44,15 @@ public class ProcessingUtils {
 		return rejectedInstances
 				.stream()
 				.anyMatch(y->isSimpler.test(y,x));			
+	}
+
+	public static Set<ExperimentSetup> getVariantsAlongVariable(
+			ExperimentSetup bestSoFar, Variable v, VariableRange vr) {
+		Set<ExperimentSetup> res =
+				vr.getValues().stream()
+				.map(x->ExperimentSetup.getVariantReplacingTheValueOfAVariableBy(bestSoFar, v, x))
+				.collect(Collectors.toSet());
+		return res;
 	}
 
 }

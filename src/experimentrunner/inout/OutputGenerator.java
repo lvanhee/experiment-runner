@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
+import experimentrunner.inout.ExperimentGoal.ExperimentalGoalType;
 import experimentrunner.inout.FileReadWriter.FileFormat;
 import experimentrunner.inout.FileReadWriter.FileOperation;
 import experimentrunner.model.experiment.data.DataPoint;
@@ -24,32 +25,49 @@ import experimentrunner.model.experimentexecutor.ExperimentSetUtils;
 import experimentrunner.model.experimentrunner.ExperimentRunner;
 
 public interface OutputGenerator {
-	static void parse(ExperimentVariableNetwork vars, ExperimentRunner ee, 
+	static void parse(ExperimentVariableNetwork vars, 
+			MultiExperimentExecutor mee,
 			JSONObject object) {
-		FileFormat ot  = FileFormat.parse((String)object.get("type"));
-		Path outputFolder = Paths.get((String)object.get("folder"));
-
-
-		Set<ExperimentSetup> allSetups =  
-				ExperimentSetUtils.getAllSetups(vars);
 		
-		Variable sortBy = VariableImpl.newInstance((String)object.get("sort-by"));
-		Set<Variable> s = Variable.parseSet((String)object.get("merge-by"));
 		
-		Map<ExperimentSetup, Set<ExperimentSetup>> mergeSetupAltogether = 
-				ExperimentSetUtils.getMergedSetupBy(allSetups, s);
-
-		for(ExperimentSetup es: mergeSetupAltogether.keySet())
+		ExperimentGoal eg = ExperimentGoal.parse(object.get("goal"));
+		
+		if(eg instanceof MaximizeVariableExperimentGoal)
 		{
-			experimentAndSave(
-					Paths.get(outputFolder.toString()+"/"+
-			toFileFormat(""+es)+".csv"),
-					mergeSetupAltogether.get(es),
-					object,
-					ee,
-					ot);
+			SearchOutput so = SearchOutput.parse(object);
+			outputMaximization(so, (MaximizeVariableExperimentGoal)eg, object,
+					vars,mee);
+		}
+		else {
+			FileFormat ot  = FileFormat.parse((String)object.get("type"));
+			Path outputFolder = Paths.get((String)object.get("folder"));
+			Set<ExperimentSetup> allSetups =  
+					ExperimentSetUtils.getAllSetups(vars);
+
+			Variable sortBy = VariableImpl.newInstance((String)object.get("sort-by"));
+			Set<Variable> s = Variable.parseSet((String)object.get("merge-by"));
+
+			Map<ExperimentSetup, Set<ExperimentSetup>> mergeSetupAltogether = 
+					ExperimentSetUtils.getMergedSetupBy(allSetups, s);
+
+			for(ExperimentSetup es: mergeSetupAltogether.keySet())
+			{
+				experimentAndSave(
+						Paths.get(outputFolder.toString()+"/"+
+								toFileFormat(""+es)+".csv"),
+						mergeSetupAltogether.get(es),
+						object,
+						mee,
+						ot);
+			}
 		}
 		//throw new Error();
+	}
+	public static void outputMaximization(
+			SearchOutput so, MaximizeVariableExperimentGoal eg, JSONObject object,
+			ExperimentVariableNetwork network, MultiExperimentExecutor mee) {
+		Search.performSearch( so,eg, object, network,
+				mee);
 	}
 	static void experimentAndSave(Path p, Set<ExperimentSetup> es, JSONObject object, 
 			ExperimentRunner computed,FileFormat ot) {

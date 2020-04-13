@@ -5,11 +5,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import experimentrunner.model.experiment.data.ExperimentSetup;
+import experimentrunner.model.experiment.data.ExperimentSetupImpl;
 import experimentrunner.model.experiment.ranges.VariableRange;
+import experimentrunner.model.experiment.values.Value;
 
 public class ExperimentVariableNetwork {
 	
@@ -66,6 +71,15 @@ public class ExperimentVariableNetwork {
 	public String toString()
 	{
 		return rangeOfInputVariables+","+outputVariables;
+	}
+
+	public ExperimentSetup getRandomExperiment() {
+		Map<Variable, Value> alloc =
+				rangeOfInputVariables.keySet()
+				.stream()
+				.collect(Collectors.toMap(Function.identity(), 
+						x->rangeOfInputVariables.get(x).aRandomValue()));
+		return ExperimentSetupImpl.newInstance(alloc);
 	}
 
 }

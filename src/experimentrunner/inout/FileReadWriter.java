@@ -146,7 +146,6 @@ public class FileReadWriter {
 								headerOutput.toString()
 								.replaceAll("\\[", "")
 								.replaceAll("\\]", "")
-								.replaceAll(",", "")
 								.replaceAll(" ", "")
 								+"\n")
 						.getBytes(),
@@ -160,7 +159,7 @@ public class FileReadWriter {
 	}
 
 
-	private static void saveAs(DataPoint dp, Path p, FileFormat format, Comparator<Variable> displayOrder)
+	public static void saveAs(DataPoint dp, Path p, FileFormat format, Comparator<Variable> displayOrder)
 	{
 		SortedSet<Variable>headerExperiment = new TreeSet<>(displayOrder);
 		SortedSet<Variable>headerOutput= new TreeSet<>(displayOrder);
@@ -168,6 +167,11 @@ public class FileReadWriter {
 		headerOutput.addAll(dp.getExperimentOutput().getResultMap().keySet());
 
 		try {
+			if(!Files.exists(p)) {
+				Files.createFile(p);
+				createHeader(p, dp, format, displayOrder);
+			}
+			
 			String separator = "";
 			switch(format)
 			{
@@ -195,6 +199,11 @@ public class FileReadWriter {
 		}catch (IOException e) {
 			throw new Error();
 		}
+	}
+	
+	public static void saveAs(DataPoint dp, Path p, FileFormat format)
+	{
+		saveAs(dp, p, format,DEFAULT_DISPLAY_ORDER);
 	}
 
 	
