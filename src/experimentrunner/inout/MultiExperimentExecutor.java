@@ -14,8 +14,8 @@ public interface MultiExperimentExecutor extends ExperimentRunner
 
 	public static MultiExperimentExecutor parse(JSONObject jsonObject, ExperimentVariableNetwork vars) {
 		String multiExperiment = (String)jsonObject.get("multi-experiment");
-		if(multiExperiment.equals("full-reset-every-experiment"))
-			return FullResetMultiExperimentExecutor.newInstance
+		if(multiExperiment.equals("parallel-executors"))
+			return ParallelThreadMultiExperimentExecutor.newInstance
 					(()-> ExperimentRunner.parse(jsonObject, vars), true,true);
 
 		throw new Error();

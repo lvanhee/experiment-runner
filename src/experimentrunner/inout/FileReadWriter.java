@@ -27,7 +27,7 @@ import experimentrunner.model.experiment.variables.Variable;
 
 public class FileReadWriter {
 	
-	public enum FileFormat{EXCEL, CSV;
+	public enum FileFormat{EXCEL, CSV, TIKZ,JFREECHART;
 
 	public static FileFormat parse(String string) {
 		return valueOf(string.toUpperCase());

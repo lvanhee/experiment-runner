@@ -16,14 +16,14 @@ public interface DataPoint {
 
 	ExperimentOutput getExperimentOutput();
 
-	static Map<Object, Set<String>> toPoints(Set<DataPoint> set, String x, String y) {
-		Map<Object, Set<String>>res = new HashMap<Object, Set<String>>();
+	static Map<Value, Set<Value>> toPoints(Set<DataPoint> set, Variable x, Variable y) {
+		Map<Value, Set<Value>>res = new HashMap<Value, Set<Value>>();
 		for(DataPoint d: set)
 		{
 			Value X =  d.getExperiment().getVariableAllocation().get(x);
 			Value Y = d.getExperimentOutput().getResultMap().get(y);
 			if(!res.containsKey(X))
-				res.put(X, new HashSet<String>());
+				res.put(X, new HashSet<Value>());
 			res.get(X).add(Y);
 		}
 		

@@ -1,5 +1,7 @@
 package experimentrunner.inout;
 
+import experimentrunner.inout.explore.ExplorationMode;
+import experimentrunner.inout.model.ExperimentGoal;
 import experimentrunner.model.experiment.variables.Variable;
 
 public class MaximizeVariableExperimentGoal implements ExperimentGoal {

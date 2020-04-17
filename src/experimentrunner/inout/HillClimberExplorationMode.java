@@ -2,6 +2,9 @@ package experimentrunner.inout;
 
 import org.json.simple.JSONObject;
 
+import experimentrunner.inout.explore.ExplorationHistory;
+import experimentrunner.inout.explore.ExplorationMode;
+import experimentrunner.inout.explore.SearchApproach;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 
 public class HillClimberExplorationMode implements ExplorationMode{

@@ -1,6 +1,6 @@
 package experimentrunner.model.experiment.values;
 
-public class StringValue implements Value {
+public class StringValue implements Value, Comparable<StringValue> {
 	
 	private final String s;
 
@@ -14,5 +14,10 @@ public class StringValue implements Value {
 
 	public static Value newInstance(String s) {
 		return new StringValue(s);
+	}
+
+	@Override
+	public int compareTo(StringValue o) {
+		return s.compareTo(o.toString());
 	}
 }

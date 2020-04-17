@@ -1,5 +1,6 @@
 package experimentrunner.inout;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,12 +11,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import experimentrunner.model.experiment.data.DataPoint;
+import experimentrunner.model.experiment.values.Value;
+import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;
 import experimentrunner.model.experiment.variables.VariableImpl;
+import experimentrunner.model.experimentexecutor.ProcessingUtils;
 
 public class ToTikzPlot {
 	
-	private static Set<Map<String, Object>> getCartesianProduct(
+	/*private static Set<Map<String, Object>> getCartesianProduct(
+			ExperimentVariableNetwork vars,
 			Set<String> input, 
 			Set<DataPoint> points) {
 		Map<String, Set<Object>>valuesPerParameter = 
@@ -27,21 +32,26 @@ public class ToTikzPlot {
 						.map(y->y.getExperiment().getVariableAllocation().get(x))
 						.collect(Collectors.toSet())
 						));
-		return getCartesianProduct(valuesPerParameter);
-	}
+		return getCartesianProduct(vars,valuesPerParameter);
+	}*/
 	
 
-	public static void exportToTikz(Set<DataPoint> points, String xAxis, 
-			String yAxis,
-			Set<Variable> lines) {		
-		Set<Map<String,Object>> allLineInstances = getCartesianProduct(lines);
-		for(Map<String,Object> line : allLineInstances)
+	public static void exportToTikz(
+			Set<DataPoint> points, Variable xAxis, 
+			Variable yAxis,
+			Set<Variable> lines,
+			ExperimentVariableNetwork network) {
+		if(! network.getInputVariables().contains(xAxis))
+			throw new Error("Wrong variable name for the X axis");
+		Set<Map<Variable,Value>> allLinesVariableAllocations = ProcessingUtils.getAllPossibleJointAllocationsFor
+				(network,lines);
+		for(Map<Variable,Value> line : allLinesVariableAllocations)
 		{
 			List<DataPoint> d = 
 					points.stream()
 					.filter(x->
 					{
-						for(String s: line.keySet())
+						for(Variable s: line.keySet())
 							if(!x.getExperiment().getVariableAllocation().get(s)
 									.equals(line.get(s)))
 								return false;
@@ -71,47 +81,21 @@ public class ToTikzPlot {
 	}
 	
 
-
-	private static Set<Map<String, Object>> getCartesianProduct(Set<Variable> lines) {
-	/*	Variable v;
-		v.g*/
-
-		Map<String, Set<Object>> trans = 
-				lines.stream()
-				.collect(
-						Collectors.toMap(
-								(Variable x)->(String)x.getName(),
-								x->x.getValues().stream().collect(Collectors.toSet())));
-		return getCartesianProduct(trans);
-	}
-
-
-	private static Set<Map<String, Object>> getCartesianProduct(
-			Map<String, Set<Object>> valuesPerParameter)
-	{
-		Set<Map<String, Object>> res = new HashSet<>();
-		if(valuesPerParameter.isEmpty()) {
-			res.add(new HashMap<>());
-			return res;
-		}
-		
-		Map<String, Set<Object>> tmp = new HashMap<String, Set<Object>>();
-		tmp.putAll(valuesPerParameter);
-		String current = tmp.keySet().iterator().next();
-		
-		Set<Object>currentValues = tmp.get(current);
-		tmp.remove(current);
-		for(Object val: currentValues)
-		{
-			 Set<Map<String, Object>>next = getCartesianProduct(tmp);
-			 next.stream().forEach(x->x.put(current, val)); 
-			 res.addAll(next);
-		}
-		return res;
-	}
+	
 	
 	private static String toLatex(String line) {
 		return line.replaceAll("_", "");
+	}
+
+
+	static void exportToTikz(Set<DataPoint> points, Variable xAxis, Variable yAxis, Variable lines,
+			ExperimentVariableNetwork network) {
+		exportToTikz(
+				points,
+				xAxis,
+				yAxis, 
+				Arrays.asList(lines).stream().collect(Collectors.toSet()),
+				network);
 	}
 
 

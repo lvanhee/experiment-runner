@@ -78,7 +78,7 @@ public class NetlogoProgramManager
 	public ExperimentOutput getResult(Set<Variable> outputVariables) {
 		  Map<Variable, Value> res= new HashMap<>();
 		    for(Variable s: outputVariables)
-		    	res.put(s, 	Variable.parse(""+workspace.report(s.toString())));
+		    	res.put(s, 	Value.parse(""+workspace.report(s.toString())));
 		    return ExperimentOutputImpl.newInstance(res);
 	}
 

@@ -3,6 +3,7 @@ package experimentrunner.inout;
 import java.util.Collection;
 import java.util.List;
 
+import experimentrunner.inout.explore.ExplorationHistory;
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 

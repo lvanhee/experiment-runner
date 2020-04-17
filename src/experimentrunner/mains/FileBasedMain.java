@@ -19,7 +19,7 @@ import experimentrunner.model.experimentrunner.ExperimentRunner;
 public class FileBasedMain {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
-		try {
+	//	try {
 		if(args.length<1) {
 			System.err.println("Indicate the name of the json file to process as a first parameter");
 		}
@@ -38,13 +38,13 @@ public class FileBasedMain {
 		System.out.println("Task completed");
 		System.exit(0);
 		}
-		catch(Exception e)
+	/*	catch(Exception e)
 		{
 			e.printStackTrace();
 			if(e.getLocalizedMessage().startsWith("Can't find extension:"))
 				System.out.println("Extension folder not found, need to add as VM parameter: -Dnetlogo.extensions.dir=\"paths/to/NetLogo 6.X.X/extensions\"");
 			throw new Error();
-		}
+		}*/
 		/*try {
 			
 
@@ -64,7 +64,7 @@ public class FileBasedMain {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
-	}
+		}
+	}*/
 
 }

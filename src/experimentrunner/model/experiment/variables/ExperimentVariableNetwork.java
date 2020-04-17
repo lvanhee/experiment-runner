@@ -1,5 +1,6 @@
 package experimentrunner.model.experiment.variables;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.data.ExperimentSetupImpl;
 import experimentrunner.model.experiment.ranges.VariableRange;
@@ -80,6 +82,10 @@ public class ExperimentVariableNetwork {
 				.collect(Collectors.toMap(Function.identity(), 
 						x->rangeOfInputVariables.get(x).aRandomValue()));
 		return ExperimentSetupImpl.newInstance(alloc);
+	}
+
+	public Map<Variable, VariableRange> getRanges() {
+		return rangeOfInputVariables;
 	}
 
 }

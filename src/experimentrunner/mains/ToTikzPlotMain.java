@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import experimentrunner.inout.ToTikzPlot;
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.variables.VariableImpl;
@@ -22,7 +23,7 @@ public class ToTikzPlotMain {
 
 	public static void main(String[] args)
 	{
-		/*Path inputFileName = parseInputFileName(args);
+		Path inputFileName = parseInputFileName(args);
 		String xAxis = parseXAxis(args);
 		String yAxis = parseYAxis(args);
 		Set<String> lines = parseLines(args);
@@ -31,7 +32,7 @@ public class ToTikzPlotMain {
 		Set<DataPoint> points = getAllRelevantPoints(inputFileName, xAxis, yAxis, lines, constraints, averageOn);
 		
 		checkInput(points, yAxis);
-		ToTikzPlot.exportToTikz(points, xAxis, yAxis, lines);*/
+		ToTikzPlot.exportToTikz(points, xAxis, yAxis, lines);
 		throw new Error();
 	}
 

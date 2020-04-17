@@ -3,7 +3,7 @@ package experimentrunner.model.experimentexecutor;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
-import experimentrunner.inout.ExperimentExportFunctions;
+import experimentrunner.inout.explore.ExperimentExportFunctions;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 
 public class BoundedTimeAndRecordOnFileTimeoutParameters implements TimeoutParameters {

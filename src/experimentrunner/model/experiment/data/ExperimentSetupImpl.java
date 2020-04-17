@@ -31,7 +31,7 @@ public class ExperimentSetupImpl implements ExperimentSetup {
 	}
 
 	public static ExperimentSetup parseString(String input) {
-		Map<String, Value> res = new HashMap<String, Value>();
+		Map<Variable, Value> res = new HashMap<Variable, Value>();
 		res.putAll(ProcessingUtils.parseMap(input));
 		return ExperimentSetupImpl.newInstance(res);
 	}

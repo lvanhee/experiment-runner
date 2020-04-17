@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import experimentrunner.inout.record.FileBaseDatabase;
 import experimentrunner.model.experiment.data.ExperimentOutput;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
@@ -18,14 +19,12 @@ import experimentrunner.model.experimentexecutor.ProcessingUtils;
 
 public class ParallelWithinSubjectIteratingExperimentRunner implements ExperimentRunner
 {
-	
-	private final Map<ExperimentSetup, ExperimentOutput> cache
-	=new ConcurrentHashMap<ExperimentSetup, ExperimentOutput>();
-
+	private final FileBaseDatabase dataBase;
 	public ParallelWithinSubjectIteratingExperimentRunner(
 			ExperimentVariableNetwork vars, 
 			Variable variableToIterateOn,
 			Supplier<WithinSubjectIteratingExperimentsRunner> supplier) {
+		dataBase = FileBaseDatabase.newInstance("output/db.txt");
 		Set<ExperimentSetup> allSetups =
 				ExperimentSetUtils.getAllSetups(vars);
 		
@@ -39,11 +38,12 @@ public class ParallelWithinSubjectIteratingExperimentRunner implements Experimen
 		 
 		 merged.keySet()
 		 .parallelStream()
+		 .filter(x->!dataBase.hasAlreadyBeenProcessed(x))
 		 .forEach(x->
 		 {
 			 WithinSubjectIteratingExperimentsRunner runner = supplier.get();
 			 for(ExperimentSetup es: merged.get(x))
-				 cache.put(es, runner.apply(es));
+				 dataBase.add(es, runner.apply(es));
 		 });
 	}
 
@@ -55,7 +55,7 @@ public class ParallelWithinSubjectIteratingExperimentRunner implements Experimen
 
 	@Override
 	public ExperimentOutput apply(ExperimentSetup t) {
-		return cache.get(t);
+		return dataBase.getResult(t);
 	}
 
 }

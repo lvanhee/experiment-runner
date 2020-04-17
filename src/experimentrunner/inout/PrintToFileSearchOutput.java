@@ -3,6 +3,7 @@ package experimentrunner.inout;
 import java.nio.file.Path;
 
 import experimentrunner.inout.FileReadWriter.FileFormat;
+import experimentrunner.inout.explore.SearchOutput;
 import experimentrunner.model.experiment.data.DataPointImpl;
 import experimentrunner.model.experiment.data.ExperimentOutput;
 import experimentrunner.model.experiment.data.ExperimentSetup;

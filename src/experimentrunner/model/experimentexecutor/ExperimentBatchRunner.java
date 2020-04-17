@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import experimentrunner.inout.ResultPlotter;
+import experimentrunner.inout.plotting.ResultPlotter;
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.DataPointImpl;
 import experimentrunner.model.experiment.data.ExperimentOutput;

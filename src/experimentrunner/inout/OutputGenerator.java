@@ -9,11 +9,16 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import experimentrunner.inout.ExperimentGoal.ExperimentalGoalType;
 import experimentrunner.inout.FileReadWriter.FileFormat;
 import experimentrunner.inout.FileReadWriter.FileOperation;
+import experimentrunner.inout.explore.Search;
+import experimentrunner.inout.explore.SearchOutput;
+import experimentrunner.inout.model.ExperimentGoal;
+import experimentrunner.inout.model.ExperimentGoal.ExperimentalGoalType;
+import experimentrunner.inout.plotting.ResultPlotter;
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.DataPointImpl;
 import experimentrunner.model.experiment.data.ExperimentOutput;
@@ -58,7 +63,8 @@ public interface OutputGenerator {
 						mergeSetupAltogether.get(es),
 						object,
 						mee,
-						ot);
+						ot, 
+						vars);
 			}
 		}
 		//throw new Error();
@@ -70,7 +76,8 @@ public interface OutputGenerator {
 				mee);
 	}
 	static void experimentAndSave(Path p, Set<ExperimentSetup> es, JSONObject object, 
-			ExperimentRunner computed,FileFormat ot) {
+			ExperimentRunner computed,FileFormat ot,
+			ExperimentVariableNetwork vars) {
 		
 		if(ot == FileFormat.CSV)
 		{
@@ -82,6 +89,29 @@ public interface OutputGenerator {
 			FileReadWriter.saveAs(points, p, ot, FileOperation.REPLACE_ALL,Optional.of(sortBy));
 		return;
 		}
+		
+		
+		if(ot == FileFormat.TIKZ || ot == FileFormat.JFREECHART)
+		{
+			JSONArray plots = ((JSONArray) object.get("plot"));
+			for(Object o: plots)
+			{
+				JSONObject plotInfo = (JSONObject)o;
+				Variable xAxis = VariableImpl.newInstance((String)plotInfo.get("x"));
+				Variable yAxis = VariableImpl.newInstance((String)plotInfo.get("y"));
+				Variable lines = VariableImpl.newInstance((String)plotInfo.get("lines")); 
+
+				Set<DataPoint> points = 
+						es.stream().map(x->DataPointImpl.newInstance(x, computed.apply(x)))
+						.collect(Collectors.toSet());
+				if(ot==FileFormat.TIKZ)
+					ToTikzPlot.exportToTikz(points, xAxis, yAxis, lines, vars);
+				else if(ot== FileFormat.JFREECHART)
+					ResultPlotter.plot(points, lines, xAxis, yAxis,"");
+			}
+			return;
+		}
+		throw new Error();
 	}
 	static String toFileFormat(String string) {
 		String res = string.replaceAll("\\{", "").replaceAll("\\}", ""); 

@@ -34,6 +34,7 @@ public class NetlogoTicksIterableRunner implements NetlogoExperimentRunner, Iter
 			Set<Variable> outputVariables) {
 		NetlogoProgramManager nlmp = NetlogoProgramManager.newInstance(
 				file,
+				"",
 				((String)jsonObject.get("setup")),
 				((String)jsonObject.get("go"))
 				);

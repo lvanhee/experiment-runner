@@ -3,7 +3,7 @@ package experimentrunner.model.experimentrunner;
 import java.io.File;
 import java.util.function.Function;
 
-import experimentrunner.inout.FileBaseDatabase;
+import experimentrunner.inout.record.FileBaseDatabase;
 import experimentrunner.model.experiment.data.ExperimentOutput;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 
