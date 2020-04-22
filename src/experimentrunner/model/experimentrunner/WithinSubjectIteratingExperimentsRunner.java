@@ -63,6 +63,11 @@ public class WithinSubjectIteratingExperimentsRunner implements ExperimentRunner
 				variableToIterate, 
 				rangetoIterate);
 	}
+
+
+	public void terminate() {
+		runner.terminate();
+	}
 	
 
 }

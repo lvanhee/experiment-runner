@@ -36,13 +36,21 @@ public class NetlogoProgramManager
 		};
 	}
 	
-	public void setup(Map<Variable,Value> setupAllocations)
+	public void setup(Map<Variable,Value> preSetupAllocations,
+			Map<Variable,Value> postSetupAllocations
+			)
 	{
-		workspace.command(preSetupCommand);
-		for(Variable v:setupAllocations.keySet())
+		setAll(preSetupAllocations);
+		workspace.command(setupCommand);
+		setAll(postSetupAllocations);
+	}
+	
+	public void setAll(Map<Variable,Value> allocations)
+	{
+		for(Variable v:allocations.keySet())
 		{
 			
-			Value val = setupAllocations.get(v);
+			Value val = allocations.get(v);
 			if(v.getName().equals("ticks")) {
 				continue;
 			}
@@ -58,7 +66,6 @@ public class NetlogoProgramManager
 			}
 			throw new Error();
 		}
-		workspace.command(setupCommand);
 	}
 
 	public static NetlogoProgramManager newInstance(Path path, String preSetupCommand, String string, String string2) {
@@ -68,7 +75,6 @@ public class NetlogoProgramManager
 		return new NetlogoProgramManager(path, "", "", "");
 	}
 	
-
 	public int getCurrentTick() {
 		Object ret = workspace.report("ticks");
 		
@@ -84,6 +90,15 @@ public class NetlogoProgramManager
 
 	public void go() {
 		workspace.command(goCommand);
+	}
+
+	public void terminate() {
+		try {
+			workspace.dispose();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			throw new Error();
+		}
 	}
 
 }

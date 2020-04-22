@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 
 import experimentrunner.inout.MultiExperimentExecutor;
 import experimentrunner.inout.OutputGenerator;
+import experimentrunner.inout.record.FileBaseDatabase;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experimentrunner.ExperimentRunner;
 
@@ -30,8 +31,11 @@ public class FileBasedMain {
 		ExperimentVariableNetwork network = 
 				ExperimentVariableNetwork.parse((JSONObject)head.get("variables"));
 		
+		FileBaseDatabase db =FileBaseDatabase.newInstance("output/db.txt"); 
 		MultiExperimentExecutor mee = 
-				MultiExperimentExecutor.parse((JSONObject)head.get("executor"), network);
+				MultiExperimentExecutor
+				.parse((JSONObject)head.get("executor"), network, 
+						db);
 		
 		OutputGenerator.parse(network,mee,(JSONObject)head.get("output"));
 		

@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import org.json.simple.JSONObject;
 
+import experimentrunner.inout.record.FileBaseDatabase;
 import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;
 import experimentrunner.model.experiment.variables.VariableImpl;
@@ -13,7 +14,7 @@ import experimentrunner.modules.netlogo.NetlogoTicksIterableRunner;
 
 public interface NetlogoExperimentRunner extends ExperimentRunner {
 
-	public static ExperimentRunner parse(JSONObject jsonObject, ExperimentVariableNetwork vars) {
+	public static ExperimentRunner parse(JSONObject jsonObject, ExperimentVariableNetwork vars, FileBaseDatabase fileBaseDatabase) {
 		Path file = Paths.get((String)jsonObject.get("file"));
 		String preSetup = "";
 		if(jsonObject.containsKey("pre-setup"))
@@ -37,7 +38,7 @@ public interface NetlogoExperimentRunner extends ExperimentRunner {
 			 return ParallelWithinSubjectIteratingExperimentRunner.newInstance(
 					 vars,
 					 withinSubjectVariable,
-					 newIterating
+					 newIterating, fileBaseDatabase
 					 );
 		}
 		

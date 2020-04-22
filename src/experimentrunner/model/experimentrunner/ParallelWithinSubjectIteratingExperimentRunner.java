@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -23,10 +24,11 @@ public class ParallelWithinSubjectIteratingExperimentRunner implements Experimen
 	public ParallelWithinSubjectIteratingExperimentRunner(
 			ExperimentVariableNetwork vars, 
 			Variable variableToIterateOn,
-			Supplier<WithinSubjectIteratingExperimentsRunner> supplier) {
-		dataBase = FileBaseDatabase.newInstance("output/db.txt");
+			Supplier<WithinSubjectIteratingExperimentsRunner> supplier,
+			FileBaseDatabase fileBaseDatabase) {
 		Set<ExperimentSetup> allSetups =
 				ExperimentSetUtils.getAllSetups(vars);
+		this.dataBase = fileBaseDatabase;
 		
 		Set<Variable>nonIterationVariables = 
 				vars.getInputVariables()
@@ -36,21 +38,38 @@ public class ParallelWithinSubjectIteratingExperimentRunner implements Experimen
 		 Map<ExperimentSetup, Set<ExperimentSetup>> merged =
 				 ExperimentSetUtils.getMergedSetupBy(allSetups, nonIterationVariables);
 		 
+		 ConcurrentLinkedQueue<WithinSubjectIteratingExperimentsRunner> runners 
+		 = new ConcurrentLinkedQueue<WithinSubjectIteratingExperimentsRunner>();
+
 		 merged.keySet()
 		 .parallelStream()
-		 .filter(x->!dataBase.hasAlreadyBeenProcessed(x))
 		 .forEach(x->
 		 {
-			 WithinSubjectIteratingExperimentsRunner runner = supplier.get();
-			 for(ExperimentSetup es: merged.get(x))
-				 dataBase.add(es, runner.apply(es));
+			 WithinSubjectIteratingExperimentsRunner runner = null;
+			 while(runner==null)
+			 {
+				 if(runners.isEmpty())
+				 {
+					 runners.add(supplier.get());
+					 System.out.println("Created runner");
+				 }
+				 runner = runners.poll();
+			 }
+			
+			 Set<ExperimentSetup> iteratedExperiments = 
+					 merged.get(x);
+			 for(ExperimentSetup es: iteratedExperiments)
+				 if(!dataBase.hasAlreadyBeenProcessed(es))
+					 dataBase.add(es, runner.apply(es));
+			 runners.add(runner);
 		 });
+		 runners.parallelStream().forEach(x->x.terminate());
 	}
 
 	public static ExperimentRunner newInstance(ExperimentVariableNetwork vars,
 			Variable variableToIterateOn,
-			Supplier<WithinSubjectIteratingExperimentsRunner> supplier) {
-		return new ParallelWithinSubjectIteratingExperimentRunner(vars, variableToIterateOn, supplier);
+			Supplier<WithinSubjectIteratingExperimentsRunner> supplier, FileBaseDatabase fileBaseDatabase) {
+		return new ParallelWithinSubjectIteratingExperimentRunner(vars, variableToIterateOn, supplier, fileBaseDatabase);
 	}
 
 	@Override

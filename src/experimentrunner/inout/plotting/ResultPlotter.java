@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.swing.WindowConstants;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -57,6 +59,8 @@ public ResultPlotter(final String title, XYSeriesCollection data, Variable xVar,
    final ChartPanel chartPanel = new ChartPanel(chart);
    chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
    setContentPane(chartPanel);
+   setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+   
    
    /*try {
 
@@ -91,12 +95,12 @@ public static void plot(Set<DataPoint> points, Variable lines, Variable x, Varia
 
 	final XYSeriesCollection data = new XYSeriesCollection();
 
-	for(Value s: splittedExperiments.keySet()) {
-		Set<DataPoint> elements = splittedExperiments.get(s);
+	for(Value lineName: splittedExperiments.keySet()) {
+		Set<DataPoint> elements = splittedExperiments.get(lineName);
 		List<Point2D.Double> l = ProcessingUtils
 				.experimentsToPoints(elements, x,y);
 		
-		final XYSeries series = new XYSeries((Comparable) s);
+		final XYSeries series = new XYSeries((Comparable) lineName.toString());
 		for(Point2D.Double p: l)
 			series.add(p.getX(), p.getY());
 		data.addSeries(series);

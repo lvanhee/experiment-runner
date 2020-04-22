@@ -18,8 +18,11 @@ import experimentrunner.model.experiment.data.ExperimentSetup;
 public class FileBaseDatabase {
 	
 	private final Path dataBaseLocation;
-	//private int REFRESH_PERIOD = 5000;
-	//private int refreshCounter = REFRESH_PERIOD;
+
+	//results are updated from the file every few operations
+	private int REFRESH_PERIOD = 5000;
+	private int refreshCounter = REFRESH_PERIOD;
+	
 	private Set<DataPoint> results = null;
 
 	
@@ -45,7 +48,7 @@ public class FileBaseDatabase {
 	}
 
 	public synchronized ExperimentOutput getResult(ExperimentSetup arg0) {
-		//if(results == null)
+		if(results == null)
 			results = FileReadWriter.loadDataPoints(dataBaseLocation);
 		
 		Set<ExperimentOutput> res =
@@ -59,10 +62,19 @@ public class FileBaseDatabase {
 	}
 
 	public synchronized void add(ExperimentSetup expe, ExperimentOutput out) {
-		//refreshCounter--;
+
 		ExperimentExportFunctions.saveResultOnFile(expe, out, dataBaseLocation);
 		results.add(DataPointImpl.newInstance(expe, out));
-	/*	if(results != null)
+		System.out.println("Saving result:"+expe+","+out);
+
+		refreshCounter--;
+		if(refreshCounter==0)
+		{
+			refreshCounter = REFRESH_PERIOD;
+			results = FileReadWriter.loadDataPoints(dataBaseLocation);
+		}
+
+		/*	if(results != null)
 			results.add(DataPointImpl.newInstance(expe, out));
 		if(refreshCounter==0) results = null;*/
 	}

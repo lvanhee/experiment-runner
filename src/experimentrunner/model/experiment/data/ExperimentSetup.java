@@ -42,5 +42,5 @@ public interface ExperimentSetup {
 		for(Variable v:s)values.remove(v);
 		return ExperimentSetupImpl.newInstance(values);
 	}
-
+	
 }

@@ -20,11 +20,12 @@ public class ParallelThreadMultiExperimentExecutor implements MultiExperimentExe
 	private final boolean parallelOps;
 	private final FileBaseDatabase db;
 	ConcurrentLinkedQueue<ExperimentRunner> runners = new ConcurrentLinkedQueue<ExperimentRunner>();
-	public ParallelThreadMultiExperimentExecutor(Supplier<ExperimentRunner> er,boolean verbose, boolean parallelOps) {
+	public ParallelThreadMultiExperimentExecutor(Supplier<ExperimentRunner> er,boolean verbose, boolean parallelOps,
+			FileBaseDatabase fileBaseDatabase) {
 		this.er = er;
 		this.verbose = verbose;
 		this.parallelOps = parallelOps;
-		db = FileBaseDatabase.newInstance("output/db.txt");
+		db = fileBaseDatabase;
 	}
 
 	@Override
@@ -40,8 +41,9 @@ public class ParallelThreadMultiExperimentExecutor implements MultiExperimentExe
 	}
 
 	public static MultiExperimentExecutor newInstance(Supplier<ExperimentRunner> er, 
-			boolean verbose, boolean parallelOps) {
-		return new ParallelThreadMultiExperimentExecutor(er, verbose,parallelOps);
+			boolean verbose, boolean parallelOps, FileBaseDatabase fileBaseDatabase) {
+		return new ParallelThreadMultiExperimentExecutor(er, verbose,parallelOps,
+				fileBaseDatabase);
 	}
 	
 	 
@@ -64,7 +66,7 @@ public class ParallelThreadMultiExperimentExecutor implements MultiExperimentExe
 			if(runners.isEmpty())
 			{
 				runners.add(er.get());
-				//		System.out.println("Created runner");
+						System.out.println("Created runner");
 			}
 			runner = runners.poll();
 		}
