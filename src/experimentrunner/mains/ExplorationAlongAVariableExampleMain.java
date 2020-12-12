@@ -16,17 +16,24 @@ import experimentrunner.model.experiment.data.ExperimentOutput;
 import experimentrunner.model.experiment.data.ExperimentOutputImpl;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experiment.data.ExperimentSetupImpl;
+import experimentrunner.model.experiment.ranges.DoubleVariableRange;
+import experimentrunner.model.experiment.ranges.EnumVariableRange;
+import experimentrunner.model.experiment.ranges.VariableRange;
+import experimentrunner.model.experiment.variables.ExperimentVariableNetwork;
 import experimentrunner.model.experiment.variables.Variable;
 import experimentrunner.model.experiment.variables.VariableImpl;
 import experimentrunner.model.experimentexecutor.ExperimentBatchRunner;
 import experimentrunner.model.experimentexecutor.ExperimentLinearScheduler;
 import experimentrunner.model.experimentexecutor.OFATExplorationAroundABaseline;
 import experimentrunner.model.experimentrunner.ExperimentRunner;
+import experimentrunner.model.experiment.values.*;
 
 public class ExplorationAlongAVariableExampleMain {
 	
-	enum InputVariable{IV1, IV2, IV3, IV4}
-	enum OutputVariable{OV1, OV2, OV3}
+	private enum InputVariable implements Variable{IV1, IV2, IV3, IV4;public String getName() {return toString();}}
+	private enum OutputVariable implements Variable {OV1, OV2, OV3;
+		public String getName() {return toString();}
+		}
 	
 	
 	enum Method{
@@ -40,7 +47,7 @@ public class ExplorationAlongAVariableExampleMain {
 		
 	/**
 	 * This main is a simple example for performing some exploration around a 
-	 * default baseline alonw two variables.
+	 * default baseline along two variables.
 	 * 
 	 * @param args
 	 */
@@ -51,49 +58,48 @@ public class ExplorationAlongAVariableExampleMain {
 		ExperimentSetup baseline = getBaseline();
 		Set<Variable> exploredVariables = new HashSet<Variable>();
 		
-		exploredVariables.add(
-				VariableImpl.newInstance(
-						InputVariable.IV1.name(),
-						0.01d, 0.1d, 1d)
+		exploredVariables.addAll(
+				Arrays.asList(
+						InputVariable.IV1,
+						InputVariable.IV3,
+						InputVariable.IV4)
 				);
-		
-		exploredVariables.add(
-				VariableImpl.newInstance(
-						InputVariable.IV3.name(),
-						0.01d, 0.1d, 1d)
-				);
-		
-		//This variable is the one used as a comparison criterion (e.g. it sets the
-		//lines on a graph)
-		VariableImpl lineVariable = 
-				VariableImpl.newInstance(
-						InputVariable.IV4.name(),
-						Arrays.asList("a", "b","c","d")
-				);
+				
 		Set<Variable> linesVariable = new HashSet<Variable>();
-		linesVariable.add(lineVariable);
+		linesVariable.add(InputVariable.IV4);
+		
+		Map<Variable, VariableRange> rangePerInputVariable = new HashMap<>();
+		rangePerInputVariable.put(InputVariable.IV1, DoubleVariableRange.newInstance(0.1, 0.1, 1));
+		rangePerInputVariable.put(InputVariable.IV2, DoubleVariableRange.newInstance(0.5, 0.2, 1));
+		rangePerInputVariable.put(InputVariable.IV3, DoubleVariableRange.newInstance(0.1, 0.3, 0.5));
+		rangePerInputVariable.put(InputVariable.IV4, EnumVariableRange.newInstance(Arrays.asList("a","b","c")));
+		
+		Set<Variable> outputVariables = new HashSet<>();
+		outputVariables.addAll(Arrays.asList(OutputVariable.values()));
+		ExperimentVariableNetwork network = ExperimentVariableNetwork.newInstance(rangePerInputVariable, outputVariables);
 		
 		OFATExplorationAroundABaseline explo = 
 				OFATExplorationAroundABaseline
 				.newInstance(baseline, 
 						exploredVariables, 
-						linesVariable);
+						linesVariable, network);
 		
 		System.out.println("Baseline:"+explo.getBaseline());
 		
+		
 		for(Variable v: explo.getExploredVariables())
 		{
-			ExperimentLinearScheduler es = explo.getSeriesRelatedTo(v);
+			ExperimentLinearScheduler es = explo.getSeriesAlteringTheValueOf(v);
 			ExperimentRunner er = (x->
 			{
-				double o1 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV1.name()).toString());
-				double o2 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV2.name()).toString());
-				double o3 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV1.name()).toString())+
-						Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV3.name()).toString());
-				Map<String, String> res = new HashMap<String, String>();
-				res.put(OutputVariable.OV1.name(),o1+"");
-				res.put(OutputVariable.OV2.name(),o2+"");
-				res.put(OutputVariable.OV3.name(),o3+"");
+				double o1 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV1).toString());
+				double o2 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV2).toString());
+				double o3 = Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV1).toString())+
+						Double.parseDouble(x.getVariableAllocation().get(InputVariable.IV3).toString());
+				Map<Variable, Value> res = new HashMap<Variable, Value>();
+				res.put(OutputVariable.OV1,DoubleValue.newInstance(o1));
+				res.put(OutputVariable.OV2,DoubleValue.newInstance(o2));
+				res.put(OutputVariable.OV3,DoubleValue.newInstance(o3));
 				return ExperimentOutputImpl.newInstance(res);
 			});
 			
@@ -103,9 +109,10 @@ public class ExplorationAlongAVariableExampleMain {
 			{
 				System.out.println("Experimenting "+v+","+ov+" regarding:"+explo.getLinesVariable());
 				ToTikzPlot.exportToTikz(values,
-						v.getName(),
-						ov.name(), 
-						explo.getLinesVariable());
+						v,
+						ov, 
+						explo.getLinesVariable(),
+						network);
 			}
 		}
 
@@ -117,11 +124,11 @@ public class ExplorationAlongAVariableExampleMain {
 	private static ExperimentSetup getBaseline()
 	{
 		
-		Map<String, Object> m = new HashMap<String, Object>();
-		m.put(InputVariable.IV1.name(), 0.5+"");
-		m.put(InputVariable.IV2.name(), 0.5+"");
-		m.put(InputVariable.IV3.name(), 0.5+"");
-		m.put(InputVariable.IV4.name(), 0.5+"");
+		Map<Variable, Value> m = new HashMap<Variable, Value>();
+		m.put(InputVariable.IV1, DoubleValue.newInstance(0.5));
+		m.put(InputVariable.IV2, DoubleValue.newInstance(0.5));
+		m.put(InputVariable.IV3, DoubleValue.newInstance(0.5));
+		m.put(InputVariable.IV4, DoubleValue.newInstance(0.5));
 		return ExperimentSetupImpl.newInstance(m);
 	}
 

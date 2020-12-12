@@ -33,7 +33,7 @@ public class MainNetLogoDiffExplorer {
 	 */
 	public static void main(String[] args) throws IOException
 	{
-		ExperimentRunner experimentComputer =
+		/*ExperimentRunner experimentComputer =
 				NetLogoExperimentsRunner.newInstance(
 						MODEL_LOCATION,
 						Arrays.asList("ticks", "time-all-deliveries-completed"),
@@ -150,6 +150,7 @@ public class MainNetLogoDiffExplorer {
 						runner,
 						Randomize.SHUFFLE,
 						validityChecker
-						); 
+						); */
+		throw new Error();
 	}
 }

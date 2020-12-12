@@ -20,7 +20,7 @@
 <dependency>
     <groupId>org.nlogo</groupId>
     <artifactId>netlogo</artifactId>
-    <version>6.1.1-3ea64fc</version>
+    <version>6.1.1</version>
 </dependency>
 <dependency>
     <groupId>com.googlecode.json-simple</groupId>

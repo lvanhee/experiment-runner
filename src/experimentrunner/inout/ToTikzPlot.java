@@ -43,6 +43,8 @@ public class ToTikzPlot {
 			ExperimentVariableNetwork network) {
 		if(! network.getInputVariables().contains(xAxis))
 			throw new Error("Wrong variable name for the X axis");
+		
+		
 		Set<Map<Variable,Value>> allLinesVariableAllocations = ProcessingUtils.getAllPossibleJointAllocationsFor
 				(network,lines);
 		for(Map<Variable,Value> line : allLinesVariableAllocations)

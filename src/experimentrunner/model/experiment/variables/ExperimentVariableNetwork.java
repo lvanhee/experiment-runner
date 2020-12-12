@@ -26,6 +26,7 @@ public class ExperimentVariableNetwork {
 	private ExperimentVariableNetwork(Map<Variable, VariableRange> rangeOfInputVariables,
 			Set<Variable> outputVariables)
 	{
+		
 		this.rangeOfInputVariables = rangeOfInputVariables;
 		this.outputVariables = outputVariables;
 	}
@@ -86,6 +87,11 @@ public class ExperimentVariableNetwork {
 
 	public Map<Variable, VariableRange> getRanges() {
 		return rangeOfInputVariables;
+	}
+
+	public static ExperimentVariableNetwork newInstance(Map<Variable, VariableRange> rangePerInputVariable,
+			Set<Variable> outputVariables) {
+		return new ExperimentVariableNetwork(rangePerInputVariable, outputVariables);
 	}
 
 }

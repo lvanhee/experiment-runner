@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import experimentrunner.model.experiment.values.Value;
+import java.util.Random;
 
 public class EnumVariableRange implements VariableRange {
 
@@ -30,5 +31,17 @@ public class EnumVariableRange implements VariableRange {
 	}
 	
 	public String toString() {return values.toString();}
+
+	public static VariableRange newInstance(List<String> asList) {
+		return new EnumVariableRange(asList
+				.stream()
+				.map(x->Value.parse(x))
+				.collect(Collectors.toList()));
+	}
+
+	@Override
+	public Value aRandomValue() {
+		return values.get((new Random()).nextInt(values.size()));
+	}
 
 }

@@ -12,14 +12,16 @@ public class ToExcelMain {
 	
 	public static void main(String[] args)
 	{
-		Set<DataPoint> dataPoints =
+		/*Set<DataPoint> dataPoints =
 				FileReadWriter.loadDataPoints(args[0]);
 		
 		FileReadWriter.saveAs(
 				dataPoints, 
 				args[1], 
 				FileFormat.EXCEL, 
-				FileOperation.REPLACE_ALL);
+				FileOperation.REPLACE_ALL);*/
+		
+		throw new Error();
 	}
 
 }

@@ -25,7 +25,9 @@ public class DoubleValue implements NumericValue {
 	
 	public boolean equals(Object o)
 	{
-		return ((DoubleValue)o).val == val;
+		if(o instanceof NumericValue)
+			return ((DoubleValue)o).val == val;
+		return false;
 	}
 
 	public double getValue() {

@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import experimentrunner.model.experiment.VariableAllocation;
 import experimentrunner.model.experiment.data.ExperimentOutput;
 import experimentrunner.model.experiment.data.ExperimentSetup;
 import experimentrunner.model.experimentexecutor.ExperimentBatchRunner;
@@ -86,9 +85,9 @@ public class MainSensitivityAnalysis {
 					|| this == CULTURAL_CLASH_ROBUSTNESS_DO_IT 
 					|| this == Experiments.ROBUSTNESS_RULE_DO_IT;
 		}
-
-		public Set<VariableAllocation> getAllSensitivityParametersToBeTested() {
-			Set<Pair<String>>res = new HashSet<>();
+	}
+		public Set<ExperimentSetup> getAllSensitivityParametersToBeTested() {
+			/*Set<Pair<String>>res = new HashSet<>();
 			res.addAll(
 					Arrays.asList(
 							new Pair<String>("#subordinates", "9"),
@@ -116,22 +115,22 @@ public class MainSensitivityAnalysis {
 			
 			res.add(new Pair<String>("nb-of-steps-before-deadline", ""+baseTimeBeforeDeadlineMin));
 			res.add(new Pair<String>("nb-of-steps-before-deadline", ""+baseTimeBeforeDeadlineMax));
+
 			
 			
-			
-			/*switch(this)
-			{
-			case COMPLEX_DO_IT: 
-			}
-			throw new Error();*/
 			return res;
-		}
-		
+			throw new Error();
+			
+			
+		}*/
+		throw new Error();
 		
 	}
 
 	public static void main(String[] args) throws IOException
 	{
+		/*
+	
 		NetLogoExperimentsRunner nler = NetLogoExperimentsRunner.newInstance(
 				"/export/home/vanhee/Dropbox/Boulot/Recherche/Ecrits/Papiers/2018 JASSS/simulation/culture_coordination.nlogo",
 				Arrays.asList("ratio-failures"),
@@ -156,12 +155,13 @@ public class MainSensitivityAnalysis {
 			" for "+expe +":"+divergence);
 			}
 		}
-		System.exit(0);
+		System.exit(0);*/
+		throw new Error();
 		
 	}
 
 	private static ExperimentLinearScheduler getExperimentSeries(Experiments expe) {
-		Map<String, List<Object>> possibleParameterValues = new HashMap<>();
+	/*	Map<String, List<Object>> possibleParameterValues = new HashMap<>();
 		
 		possibleParameterValues.put("leader-value-system", 
 				Arrays.asList("PDI- MAS+","PDI- MAS-","PDI+ MAS+","PDI+ MAS-"));
@@ -329,7 +329,8 @@ public class MainSensitivityAnalysis {
 	
 		
 		
-		return ExperimentLinearScheduler.newInstance(possibleParameterValues);
+		return ExperimentLinearScheduler.newInstance(possibleParameterValues);*/
+		throw new Error();
 	}
 
 	private static File getOutputFile() {

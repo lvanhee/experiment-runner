@@ -24,8 +24,9 @@ public class SimpleNetLogoExperimentRunner implements NetlogoExperimentRunner{
 
 	@Override
 	public ExperimentOutput apply(ExperimentSetup t) {
-		nlmp.setup(t.getVariableAllocation());
-		return nlmp.getResult(outputVariables);
+		/*nlmp.setup(t.getVariableAllocation());
+		return nlmp.getResult(outputVariables);*/
+		throw new Error();
 	}
 
 	public static ExperimentRunner newInstance(Path file, Set<Variable>outputVariables, String preSetup) {

@@ -34,7 +34,7 @@ import experimentrunner.model.experimentrunner.ExperimentRunner;
 
 public class Search {
 
-	static void performSearch(
+	public static void performSearch(
 			SearchOutput so, 
 			MaximizeVariableExperimentGoal eg,
 			JSONObject object,

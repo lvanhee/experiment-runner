@@ -24,7 +24,8 @@ public class VariableImpl implements Variable {
 		return new VariableImpl(name);
 	}
 	
-	public boolean equals(Object o) {return ((VariableImpl)o).name.equals(name);
+	public boolean equals(Object o) {
+		return ((VariableImpl)o).name.equals(name);
 	}
 	public int hashCode()
 	{

@@ -11,9 +11,11 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import experimentrunner.inout.FileReadWriter;
 import experimentrunner.inout.ToTikzPlot;
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.ExperimentSetup;
+import experimentrunner.model.experiment.variables.Variable;
 import experimentrunner.model.experiment.variables.VariableImpl;
 
 
@@ -23,16 +25,16 @@ public class ToTikzPlotMain {
 
 	public static void main(String[] args)
 	{
-		Path inputFileName = parseInputFileName(args);
-		String xAxis = parseXAxis(args);
-		String yAxis = parseYAxis(args);
-		Set<String> lines = parseLines(args);
+		/*Path inputFileName = parseInputFileName(args);
+		Variable xAxis = parseXAxis(args);
+		Variable yAxis = parseYAxis(args);
+		Set<Variable> lines = parseLines(args);
 		Map<String, String> constraints = parseInputConstraints(args);
 		Set<String> averageOn = parseAveragingOn(args);
 		Set<DataPoint> points = getAllRelevantPoints(inputFileName, xAxis, yAxis, lines, constraints, averageOn);
 		
 		checkInput(points, yAxis);
-		ToTikzPlot.exportToTikz(points, xAxis, yAxis, lines);
+		ToTikzPlot.exportToTikz(points, xAxis, yAxis, lines);*/
 		throw new Error();
 	}
 
@@ -43,7 +45,8 @@ public class ToTikzPlotMain {
 	}
 
 	private static Set<String> parseLines(String[] args) {
-		return FileReadWriter.parseSet(load(args, Keywords.LINES, true).get());
+		/*return FileReadWriter.parseSet(load(args, Keywords.LINES, true).get());*/
+		throw new Error();
 	}
 
 

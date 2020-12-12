@@ -9,4 +9,9 @@ module experiment_runner {
 	requires jfreechart;
 	requires jcommon;
 	requires json.simple;
+	exports experimentrunner.model.experiment.variables;
+	exports experimentrunner.model.experiment.values;
+	exports experimentrunner.model.experiment.ranges;
+	exports experimentrunner.model.experimentrunner;
+	exports experimentrunner.model.experiment.data;
 }

@@ -75,7 +75,7 @@ private static final boolean PLOT = false;
 			ExperimentRunner er
 			) {
 
-		Set<ExperimentSetup> experimentsToBeRun = 
+		/*Set<ExperimentSetup> experimentsToBeRun = 
 				series.stream().map(x->x.getAllSetups()).reduce(
 						new LinkedList<ExperimentSetup>(), (x,y)->{x.addAll(y); return x;})
 				.stream().collect(Collectors.toSet());
@@ -147,13 +147,14 @@ private static final boolean PLOT = false;
 				}
 			}
 		}
-		return bestSoFar;
+		return bestSoFar;*/
+		throw new Error();
 	}
 
 	private static Set<ExperimentLinearScheduler> getNeighborsOf(ExperimentLinearScheduler max,
 			Collection<ExperimentLinearScheduler> series) {
 
-		Set<ExperimentLinearScheduler>res = new HashSet<>();
+		/*Set<ExperimentLinearScheduler>res = new HashSet<>();
 		for(ExperimentLinearScheduler es: series)
 		{
 			for(ExperimentSetup exp: es.getAllSetups())
@@ -170,7 +171,8 @@ private static final boolean PLOT = false;
 				if(res.contains(es))break;
 			}
 		}
-		return res;
+		return res;*/
+		throw new Error();
 	}
 
 	
@@ -181,7 +183,7 @@ private static final boolean PLOT = false;
 			String outputParameter,
 			ExperimentRunner nler) {
 		
-		double res = 0;
+	/*	double res = 0;
 		for(ExperimentSetup setup: es.getAllSetups())
 		{
 			ExperimentOutput out = nler.apply(setup);
@@ -196,7 +198,8 @@ private static final boolean PLOT = false;
 		}
 		
 		res/=es.getAllSetups().size();
-		return res;
+		return res;*/
+		throw new Error();
 	}
 	
 	
@@ -207,7 +210,7 @@ private static final boolean PLOT = false;
 			ExperimentRunner er,
 			Randomize r, Predicate<ExperimentSetup> validityChecker
 			) {
-		List<ExperimentLinearScheduler> expe = ExperimentLinearScheduler.cartesianProduct(
+	/*	List<ExperimentLinearScheduler> expe = ExperimentLinearScheduler.cartesianProduct(
 				ExperimentLinearScheduler.newInstance(definableVariables),
 				ExperimentLinearScheduler.newInstance(comparisonVariables)); 
 		
@@ -223,7 +226,8 @@ private static final boolean PLOT = false;
 		
 		return getSeriesMaximizing(
 				expe,
-				criteriaToMaximize, Optional.empty(),er);
+				criteriaToMaximize, Optional.empty(),er);*/
+		throw new Error();
 	}
 
 	public static Set<DataPoint> process(ExperimentLinearScheduler es, ExperimentRunner er) {

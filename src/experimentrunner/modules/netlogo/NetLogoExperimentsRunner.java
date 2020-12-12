@@ -58,7 +58,7 @@ public class NetLogoExperimentsRunner implements ExperimentRunner{
 	}
 
 	public ExperimentOutput apply(ExperimentSetup e) {
-		System.out.print("Running:"+e+" "+getDate());
+		/*System.out.print("Running:"+e+" "+getDate());
 		
 		
 		if(terminationCommand.isPresent())
@@ -69,7 +69,8 @@ public class NetLogoExperimentsRunner implements ExperimentRunner{
 	    
 	  
 	    System.out.println(result);
-	    return result;
+	    return result;*/
+		throw new Error();
 		
 	}
 	

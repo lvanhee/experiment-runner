@@ -67,7 +67,7 @@ public class ExperimentLinearScheduler {
 	}
 
 	public static ExperimentLinearScheduler newInstance(ExperimentLinearScheduler es, String parameter, String value) {
-		List<ExperimentSetup>expes = new LinkedList<>();
+		/*List<ExperimentSetup>expes = new LinkedList<>();
 		for(ExperimentSetup setup:es.getAllSetups())
 		{
 			Map<String, Object> m = setup.getVariableAllocation();
@@ -75,7 +75,8 @@ public class ExperimentLinearScheduler {
 			
 			expes.add(ExperimentSetupImpl.newInstance(m));
 		}
-		return new ExperimentLinearScheduler(expes);
+		return new ExperimentLinearScheduler(expes);*/
+		throw new Error();
 	}
 
 	public static ExperimentLinearScheduler newInstance(ExperimentVariableNetwork vars) {
@@ -112,7 +113,7 @@ public class ExperimentLinearScheduler {
 	}
 
 	public Map<String, Object> getLockedVariablesMap() {
-		Map<String, Object> res = new HashMap<String, Object>();
+		/*Map<String, Object> res = new HashMap<String, Object>();
 		Set<String> free = new HashSet<String>();
 		
 		for(ExperimentSetup e: expes)
@@ -123,7 +124,9 @@ public class ExperimentLinearScheduler {
 					else {free.add(s); res.remove(s);}
 				else
 					res.put(s, e.getVariableAllocation().get(s));
-		return res;
+		return res;*/
+		
+		throw new Error();
 	}
 
 }
