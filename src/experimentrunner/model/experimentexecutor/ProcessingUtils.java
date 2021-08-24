@@ -9,10 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import experimentrunner.model.experiment.data.DataPoint;
 import experimentrunner.model.experiment.data.ExperimentSetup;
+import experimentrunner.model.experiment.data.ExperimentSetupImpl;
 import experimentrunner.model.experiment.ranges.VariableRange;
 import experimentrunner.model.experiment.values.NumericValue;
 import experimentrunner.model.experiment.values.Value;
@@ -59,6 +61,14 @@ public class ProcessingUtils {
 				.map(x->ExperimentSetup.getVariantReplacingTheValueOfAVariableBy(bestSoFar, v, x))
 				.collect(Collectors.toSet());
 		return res;
+	}
+	
+	public static Set<ExperimentSetup> getAllSetupsFor(ExperimentVariableNetwork network)
+	{
+		return getAllPossibleJointAllocationsFor(network, network.getInputVariables())
+				.stream()
+				.map(x->ExperimentSetupImpl.newInstance(x))
+				.collect(Collectors.toSet());
 	}
 	
 	public static Set<Map<Variable, Value>> getAllPossibleJointAllocationsFor(

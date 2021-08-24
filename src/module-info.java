@@ -14,4 +14,5 @@ module experiment_runner {
 	exports experimentrunner.model.experiment.ranges;
 	exports experimentrunner.model.experimentrunner;
 	exports experimentrunner.model.experiment.data;
+	exports experimentrunner.model.experimentexecutor;
 }
